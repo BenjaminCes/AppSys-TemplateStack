@@ -1,0 +1,7 @@
+-- Initial schema. Add tables here as the MVP grows.
+-- Example:
+-- CREATE TABLE IF NOT EXISTS users (
+--   id INTEGER PRIMARY KEY AUTOINCREMENT,
+--   email TEXT NOT NULL UNIQUE,
+--   created_at TEXT NOT NULL DEFAULT (datetime('now'))
+-- );
