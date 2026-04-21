@@ -11,7 +11,7 @@
 Volgt de Claudebase-standaard. Zie `docs/STACK-STANDARD.md` voor de volledige tabel. Afwijkingen (indien toegestaan) worden gelogd in `docs/ARCHITECTURE.md#Stack`.
 
 - Frontend: Vue 3 + Vite + TypeScript + Pinia + Tailwind CSS
-- Auth: Clerk
+- Auth: lokaal (JWT + bcrypt, users-tabel) \u2014 zie `backend/src/services/authService.ts`
 - Backend: Express + TypeScript (port 3001)
 - Database: SQLite via `sql.js` (file-persist op `backend/data/app.db`)
 - Testing: Vitest (backend + frontend)

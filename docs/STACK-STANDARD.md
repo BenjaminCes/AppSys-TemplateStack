@@ -7,7 +7,7 @@
 | Laag | Keuze | Versie-hint |
 |---|---|---|
 | Frontend | Vue 3 + Vite + TypeScript + Pinia + Tailwind CSS | Vue ^3.5, Vite ^5, Tailwind ^3.4 |
-| Auth | Clerk (`@clerk/vue` + `@clerk/backend`) | latest |
+| Auth | Lokaal: JWT + bcrypt + `users`-tabel (zie `backend/src/services/authService.ts`) | jsonwebtoken ^9, bcryptjs ^2.4 |
 | Backend | Express + TypeScript (port 3001) | Express ^4.19, ts-node-dev voor dev |
 | Database | SQLite via `sql.js` (file-persistent op disk) | sql.js ^1.10 |
 | Migrations | Eigen runner (`backend/src/db/migrations.ts`), `.sql`-files | n.v.t. |
@@ -28,6 +28,7 @@ Poort-conventie: backend `3001`, frontend dev-server `5173`. `/api` op de fronte
 - React i.p.v. Vue: als het team/klant expliciet React-expertise inbrengt.
 - Fastify i.p.v. Express: alleen bij aantoonbare hot-path-perf behoefte (> 5k req/s).
 - Playwright/Cypress: als er echte E2E-coverage nodig is bovenop Vitest.
+- Clerk / Auth0 / SSO i.p.v. lokale JWT-auth: bij enterprise-context (SAML/OIDC-vereiste, centraal gebruikersbeheer, MFA-verplichting).
 
 **Niet gerechtvaardigd** (wordt geweigerd):
 - "Ik vind X leuker / modernder / populairder op HN".
