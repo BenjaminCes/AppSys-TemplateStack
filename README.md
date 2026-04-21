@@ -1,6 +1,6 @@
 # AppSys Stack-Standaard (Claudebase-template)
 
-> Bedrijfsstandaard scaffold voor interne projecten bij AppSys. Vue 3 + Express + SQLite + Vitest met lokale JWT-auth. Wordt gekloond, gescaffold, en via drie Claude Code-skills (`/start-sessie`, `/nieuw-project`, `/einde-sessie`) bediend. Eenmaal geinstalleerd kan een engineer binnen 45 minuten productief zijn \u2014 zonder voorkennis en zonder pre-installed tools.
+> Bedrijfsstandaard scaffold voor interne projecten bij AppSys. Vue 3 + Express + SQLite + Vitest met lokale JWT-auth. Wordt gekloond, gescaffold, en via drie Claude Code-skills (`/start-sessie`, `/nieuw-project`, `/einde-sessie`) bediend. Eenmaal geinstalleerd kan een engineer binnen 45 minuten productief zijn zonder voorkennis en zonder pre-installed tools.
 
 ---
 
