@@ -4,12 +4,16 @@ import { config } from './config'
 import { initDb, closeDb } from './db/connection'
 import { runMigrations } from './db/migrations'
 import healthRouter from './routes/health'
+import authRouter from './routes/auth'
+import meRouter from './routes/me'
 
 export async function buildApp(): Promise<express.Express> {
   const app = express()
   app.use(cors({ origin: config.corsOrigins }))
   app.use(express.json({ limit: '2mb' }))
   app.use('/api/health', healthRouter)
+  app.use('/api/auth', authRouter)
+  app.use('/api/me', meRouter)
   return app
 }
 

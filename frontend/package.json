@@ -12,7 +12,6 @@
     "typecheck": "vue-tsc --noEmit"
   },
   "dependencies": {
-    "@clerk/vue": "^1.0.0",
     "axios": "^1.7.7",
     "pinia": "^2.2.4",
     "vue": "^3.5.0",
