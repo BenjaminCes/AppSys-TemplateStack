@@ -366,6 +366,5 @@ Na de eerste run, voor je echt gaat bouwen:
 ## Vragen of hulp
 
 - Issues: https://github.com/BenjaminCes/AppSys-TemplateStack/issues
-- Mail: benjamin.ceyssens@appsysictgroup.com
 - Voor diepere stack-keuzes: lees `docs/STACK-STANDARD.md` voordat je
   een afwijking voorstelt.

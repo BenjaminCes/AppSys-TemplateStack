@@ -222,7 +222,6 @@ Schrijfregels: [`docs/style-guide.md`](./docs/style-guide.md).
 
 ## Support
 
-- Team-lead: Benjamin Ceyssens, `benjamin.ceyssens@appsysictgroup.com`
 - Issues: https://github.com/BenjaminCes/AppSys-TemplateStack/issues
 - Stack-keuze-vragen: lees `docs/STACK-STANDARD.md` sectie 2 voor je
   afwijkt.

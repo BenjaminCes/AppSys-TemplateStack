@@ -14,6 +14,7 @@
     "typecheck": "cd backend && npm run typecheck && cd ../frontend && npm run typecheck",
     "lint": "cd backend && npm run lint && cd ../frontend && npm run lint",
     "lint:fix": "cd backend && npm run lint:fix && cd ../frontend && npm run lint:fix",
+    "upgrade-from-template": "node scripts/upgrade-from-template.mjs",
     "install:all": "npm install && cd backend && npm install && cd ../frontend && npm install",
     "postinstall": "node -e \"try{require('child_process').execSync('git config core.hooksPath scripts/git-hooks',{stdio:'inherit'})}catch(e){console.error('[postinstall] kon hooksPath niet zetten:',e.message)}\""
   },
