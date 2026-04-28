@@ -76,8 +76,8 @@ Schrijf antwoorden in `docs/MVP.md` en vul ook de secties `Probleem`, `Doelgroep
 
 ### A6. Docs vullen + install + commit
 
-- Vul `CLAUDE.md` (Project Overview sectie), `docs/ARCHITECTURE.md` (projectnaam + eventuele afwijkingen), `docs/UX-DESIGN.md` (alleen als de gebruiker er iets over zegt, anders placeholder laten).
-- Vraag: "Nu `npm run install:all` draaien? Duurt ~2-5 minuten." Bij ja: run het. Bij nee: zeg dat de gebruiker dit later zelf moet doen.
+- Vul `CLAUDE.md` (Project Overview sectie), `docs/ARCHITECTURE.md` (projectnaam + eventuele afwijkingen), `docs/UX-DESIGN.md` (alleen als de gebruiker er iets over zegt, anders default-pattern uit template laten staan).
+- Vraag: "Nu `npm run install:all` draaien? Duurt ~2-5 minuten en activeert de pre-commit hook (postinstall zet `core.hooksPath` op `scripts/git-hooks`)." Bij ja: run het, en daarna `npm run lint` als sanity-check. Bij nee: zeg dat de gebruiker dit later zelf moet doen + dat de hook pas actief is na install.
 - Initial commit + push:
   ```bash
   git add -A
@@ -109,16 +109,19 @@ Controleer aanwezigheid:
 
 Toon tabel `✓ / ✗`.
 
-### C2. Git-state
+### C2. Git-state + hook-activatie
 
 ```bash
 git status
 git status -sb
 git log --oneline -5
 git remote -v
+git config core.hooksPath
 ```
 
 Als `git remote` geen GitHub-URL heeft: stop en vraag de gebruiker een remote te koppelen.
+
+Als `git config core.hooksPath` niet `scripts/git-hooks` retourneert (en het project heeft die map): bied aan dit eenmalig te activeren met `git config core.hooksPath scripts/git-hooks`. Dit is dezelfde activatie die `npm install` automatisch doet via postinstall.
 
 ### C3. Push-first-prompt (nieuw)
 

@@ -20,11 +20,15 @@ Aan het einde van een werksessie op een project onder `C:\Claudebase\`. De gebru
 ### Stap 1: Lint & tests
 
 Detecteer beschikbare scripts in `package.json` (root + backend + frontend):
-- Als `scripts.lint` bestaat: draai `npm run lint`
+- Als `scripts.lint` bestaat: draai `npm run lint` - **errors blokkeren commit hard**, niet committen tot ze fixed zijn (eventueel `npm run lint:fix` voorstellen).
 - Als `scripts.test` bestaat: draai `npm test` (of `npm run test`)
 - Als `scripts.typecheck` bestaat: draai `npm run typecheck`
 
-Draai backend + frontend parallel waar mogelijk. Bij falende lint/tests: toon output, vraag gebruiker of toch committeren (hard waarschuwen tegen committen van rode tests).
+Draai backend + frontend parallel waar mogelijk.
+
+- **Lint-errors**: HARD blokkerend. ESLint-violations zijn deterministisch fixable (kleur-classes, UI-libs, ongebruikte imports). Niet doorgaan tot ze opgelost zijn.
+- **Test-failures**: blokkeren default ook, maar mogen met expliciete user-bevestiging gepasseerd worden (bv. tijdelijk falende test waarvan de fix in een aparte commit komt). Documenteer dit dan in de commit-body.
+- **Typecheck-errors**: blokkerend, geen bypass.
 
 ### Stap 1.5: Security-scan (optioneel)
 

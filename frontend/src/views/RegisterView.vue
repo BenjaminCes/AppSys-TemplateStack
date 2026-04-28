@@ -34,7 +34,9 @@ async function submit(): Promise<void> {
       class="w-full max-w-sm bg-white p-8 rounded-lg shadow space-y-4"
       @submit.prevent="submit"
     >
-      <h1 class="text-2xl font-bold">Account aanmaken</h1>
+      <h1 class="text-2xl font-bold">
+        Account aanmaken
+      </h1>
 
       <label class="block">
         <span class="text-sm text-slate-700">Email</span>
@@ -44,7 +46,7 @@ async function submit(): Promise<void> {
           required
           autocomplete="email"
           class="mt-1 w-full rounded border border-slate-300 px-3 py-2 focus:outline-none focus:ring focus:border-brand-500"
-        />
+        >
       </label>
 
       <label class="block">
@@ -56,10 +58,15 @@ async function submit(): Promise<void> {
           minlength="8"
           autocomplete="new-password"
           class="mt-1 w-full rounded border border-slate-300 px-3 py-2 focus:outline-none focus:ring focus:border-brand-500"
-        />
+        >
       </label>
 
-      <p v-if="error" class="text-sm text-red-600">{{ error }}</p>
+      <p
+        v-if="error"
+        class="text-sm text-red-600"
+      >
+        {{ error }}
+      </p>
 
       <button
         type="submit"
@@ -71,7 +78,12 @@ async function submit(): Promise<void> {
 
       <p class="text-sm text-slate-600">
         Al een account?
-        <router-link to="/login" class="text-brand-600 hover:underline">Inloggen</router-link>
+        <router-link
+          to="/login"
+          class="text-brand-600 hover:underline"
+        >
+          Inloggen
+        </router-link>
       </p>
     </form>
   </main>

@@ -1,5 +1,14 @@
 import { createRouter, createWebHistory, type RouteRecordRaw } from 'vue-router'
 import { useAuthStore } from '@/stores/auth'
+import type { Role } from '@/types/domain'
+
+declare module 'vue-router' {
+  interface RouteMeta {
+    requiresAuth?: boolean
+    guestOnly?: boolean
+    requiresRole?: Role
+  }
+}
 
 const routes: RouteRecordRaw[] = [
   {
@@ -7,6 +16,12 @@ const routes: RouteRecordRaw[] = [
     name: 'home',
     component: () => import('@/views/HomeView.vue'),
     meta: { requiresAuth: true }
+  },
+  {
+    path: '/admin',
+    name: 'admin',
+    component: () => import('@/views/AdminView.vue'),
+    meta: { requiresAuth: true, requiresRole: 'admin' }
   },
   {
     path: '/login',
@@ -37,6 +52,9 @@ router.beforeEach(to => {
     return { path: '/login' }
   }
   if (to.meta.guestOnly && auth.isAuthenticated) {
+    return { path: '/' }
+  }
+  if (to.meta.requiresRole && auth.user?.role !== to.meta.requiresRole) {
     return { path: '/' }
   }
   return true

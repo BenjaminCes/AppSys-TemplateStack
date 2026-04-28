@@ -72,7 +72,7 @@ Werk met de gebruiker per bestand (elke mag "skip" zeggen, maar CLAUDE.md#Projec
 
 ### Stap 7: Install (optioneel) + initial commit + push
 
-- Vraag: "Nu `npm run install:all` draaien?" (duurt 2-5 min). Bij ja: run het. Bij nee: zeg dat de gebruiker dit later zelf moet doen.
+- Vraag: "Nu `npm run install:all` draaien?" (duurt 2-5 min). Install activeert via postinstall ook de pre-commit hook (`git config core.hooksPath scripts/git-hooks`). Bij ja: run het, en daarna `npm run lint` om te valideren dat de scaffold zelf clean is. Bij nee: zeg dat de gebruiker dit later moet doen, en dat de hook pas actief is na install.
 - Commit + push:
   ```bash
   git add -A

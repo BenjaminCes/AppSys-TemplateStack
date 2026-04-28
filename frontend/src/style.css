@@ -1,15 +1,68 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Inter+Tight:wght@500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
+* { box-sizing: border-box; }
+
 html,
 body {
-  font-family:
-    'Inter', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  font-family: 'Inter', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
 }
 
 body {
   margin: 0;
+  background-color: #f3f4f6;
+  color: #1e293b;
+}
+
+:root {
+  --sidebar-width: 232px;
+  --topbar-height: 56px;
+
+  /* AppSys huisstijl-tokens */
+  --brand-navy: #252A3A;
+  --brand-navy-light: #2d3548;
+  --brand-navy-dark: #1a2030;
+  --brand-orange: #F1860B;
+  --brand-orange-hover: #d9770a;
+  --brand-cyan: #37BEEA;
+  --brand-green: #A0C554;
+  --brand-green-deep: #5b7a2f;
+
+  /* Surface- en ink-schaal */
+  --surface-0: #ffffff;
+  --surface-1: #f9fafb;
+  --surface-2: #f3f4f6;
+  --ink-50: #f8fafc;
+  --ink-100: #e5e7eb;
+  --ink-200: #d1d5db;
+  --ink-400: #9ca3af;
+  --ink-500: #6b7280;
+  --ink-700: #374151;
+  --ink-800: #1f2937;
+  --ink-900: #111827;
+
+  /* Typografie + radius + motion */
+  --font-display: 'Inter Tight', 'Inter', system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, monospace;
+  --radius-sm: 6px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --duration-fast: 120ms;
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* Highlight wanneer de search-dropdown scrollt naar een anchor. */
+.search-flash {
+  animation: searchFlash 1.4s var(--ease-out) both;
+}
+
+@keyframes searchFlash {
+  0%   { box-shadow: 0 0 0 0 rgba(241, 134, 11, 0.55); }
+  20%  { box-shadow: 0 0 0 6px rgba(241, 134, 11, 0.35); }
+  100% { box-shadow: 0 0 0 0 rgba(241, 134, 11, 0); }
 }

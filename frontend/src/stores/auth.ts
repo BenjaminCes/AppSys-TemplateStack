@@ -1,7 +1,8 @@
 import { defineStore } from 'pinia'
 import { apiClient } from '@/api/client'
+import type { Role } from '@/types/domain'
 
-export type User = { id: number; email: string }
+export type User = { id: number; email: string; role: Role }
 
 type AuthState = {
   user: User | null
@@ -18,7 +19,8 @@ export const useAuthStore = defineStore('auth', {
   }),
 
   getters: {
-    isAuthenticated: (s): boolean => !!s.token && !!s.user
+    isAuthenticated: (s): boolean => !!s.token && !!s.user,
+    isAdmin: (s): boolean => s.user?.role === 'admin'
   },
 
   actions: {

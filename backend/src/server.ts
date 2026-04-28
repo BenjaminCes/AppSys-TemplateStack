@@ -6,6 +6,9 @@ import { runMigrations } from './db/migrations'
 import healthRouter from './routes/health'
 import authRouter from './routes/auth'
 import meRouter from './routes/me'
+import itemsRouter from './routes/items'
+import searchRouter from './routes/search'
+import adminRouter from './routes/admin'
 
 export async function buildApp(): Promise<express.Express> {
   const app = express()
@@ -14,6 +17,9 @@ export async function buildApp(): Promise<express.Express> {
   app.use('/api/health', healthRouter)
   app.use('/api/auth', authRouter)
   app.use('/api/me', meRouter)
+  app.use('/api/items', itemsRouter)
+  app.use('/api/search', searchRouter)
+  app.use('/api/admin', adminRouter)
   return app
 }
 

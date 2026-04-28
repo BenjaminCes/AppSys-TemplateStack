@@ -1,0 +1,477 @@
+<!doctype html>
+<html lang="nl">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>AppSys Template - Huisstijl Preview</title>
+  <link rel="icon" type="image/svg+xml" href="frontend/public/brand/heartbeat-favicon.svg" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Inter+Tight:wght@600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" />
+  <style>
+    :root {
+      --sidebar-width: 232px;
+      --topbar-height: 56px;
+      --brand-navy: #252A3A;
+      --brand-orange: #F1860B;
+      --brand-orange-hover: #d9770a;
+      --brand-green: #A0C554;
+      --surface-0: #ffffff;
+      --surface-2: #f3f4f6;
+      --ink-100: #e5e7eb;
+      --ink-200: #d1d5db;
+      --ink-400: #9ca3af;
+      --ink-500: #6b7280;
+      --ink-700: #374151;
+      --ink-900: #111827;
+      --font-display: 'Inter Tight', 'Inter', system-ui, sans-serif;
+      --font-mono: 'JetBrains Mono', ui-monospace, monospace;
+      --radius-sm: 6px;
+      --duration-fast: 120ms;
+      --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+    }
+    * { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; height: 100%; font-family: 'Inter', ui-sans-serif, system-ui, -apple-system, sans-serif; background: var(--surface-2); color: var(--ink-900); -webkit-font-smoothing: antialiased; }
+    .shell { display: flex; height: 100vh; }
+
+    aside.sidebar { width: var(--sidebar-width); background: linear-gradient(180deg, #1f2432 0%, #252A3A 60%, #1a1f2c 100%); color: rgba(255,255,255,0.9); display: flex; flex-direction: column; border-right: 1px solid rgba(255,255,255,0.04); flex-shrink: 0; }
+    .sidebar__brand { display: flex; align-items: center; gap: 12px; padding: 18px 16px 14px; border-bottom: 1px solid rgba(255,255,255,0.06); }
+    .sidebar__logo { width: 40px; height: 40px; border-radius: 10px; flex-shrink: 0; }
+    .sidebar__nav { flex: 1; padding: 14px 10px; display: flex; flex-direction: column; gap: 1px; }
+    .sidebar__section { font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; color: rgba(255,255,255,0.38); padding: 14px 12px 4px; }
+    .sidebar__section:first-of-type { padding-top: 2px; }
+    .sidebar__link { display: flex; align-items: center; gap: 10px; padding: 8px 12px; border-radius: var(--radius-sm); font-size: 12.5px; font-weight: 500; color: rgba(255,255,255,0.64); text-decoration: none; letter-spacing: 0.01em; transition: color var(--duration-fast) var(--ease-out), background var(--duration-fast) var(--ease-out); cursor: pointer; background: transparent; border: none; text-align: left; font-family: inherit; }
+    .sidebar__link:hover { color: #fff; background: rgba(255,255,255,0.05); }
+    .sidebar__link.active { color: #fff; background: rgba(241,134,11,0.15); box-shadow: inset 2px 0 0 var(--brand-orange); }
+    .sidebar__link svg { width: 15px; height: 15px; opacity: 0.85; }
+    .sidebar__foot { padding: 10px 16px 12px; border-top: 1px solid rgba(255,255,255,0.06); display: flex; flex-direction: column; gap: 6px; }
+    .sidebar__user { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+    .sidebar__user-name { font-size: 11.5px; color: rgba(255,255,255,0.75); font-weight: 500; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .sidebar__logout { font-size: 10.5px; color: rgba(255,255,255,0.55); background: transparent; border: 1px solid rgba(255,255,255,0.1); padding: 3px 8px; border-radius: var(--radius-sm); cursor: pointer; }
+    .sidebar__logout:hover { color: var(--brand-orange); border-color: var(--brand-orange); }
+    .sidebar__brandline { font-family: var(--font-mono); font-size: 9.5px; letter-spacing: 0.06em; color: rgba(255,255,255,0.3); text-transform: uppercase; }
+
+    .main { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
+    header.topbar { background: var(--surface-0); border-bottom: 1px solid var(--ink-100); padding: 12px 24px; display: flex; align-items: center; justify-content: space-between; flex-shrink: 0; min-height: var(--topbar-height); gap: 12px; }
+    .topbar__left { display: flex; align-items: center; gap: 12px; flex-shrink: 0; }
+    .topbar__eyebrow { font-family: var(--font-mono); font-size: 10.5px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--ink-500); border-right: 1px solid var(--ink-200); padding-right: 12px; }
+    .topbar__title { font-family: var(--font-display); font-size: 15px; font-weight: 600; letter-spacing: -0.01em; color: var(--ink-900); margin: 0; }
+    .topbar__center { flex: 1; display: flex; justify-content: center; padding: 0 16px; min-width: 0; }
+    .search-wrapper { position: relative; width: 100%; max-width: 640px; }
+    .search-field { display: flex; align-items: center; gap: 12px; padding: 10px 16px; border-radius: 8px; background: #f9fafb; border: 1px solid var(--ink-100); transition: background var(--duration-fast) var(--ease-out), border-color var(--duration-fast) var(--ease-out), box-shadow var(--duration-fast) var(--ease-out); }
+    .search-field:focus-within { background: #fff; border-color: var(--brand-orange); box-shadow: 0 0 0 3px rgba(241,134,11,0.18); }
+    .search-field__icon { width: 18px; height: 18px; color: var(--ink-400); flex-shrink: 0; }
+    .search-field__input { flex: 1; border: none; outline: none; background: transparent; font-family: inherit; font-size: 13px; color: var(--ink-900); min-width: 0; }
+    .search-field__input::placeholder { color: var(--ink-400); }
+    .search-field__kbd { font-family: var(--font-mono); font-size: 11px; color: var(--ink-500); background: #fff; border: 1px solid var(--ink-100); padding: 2px 6px; border-radius: 4px; flex-shrink: 0; }
+    .search-dropdown { position: absolute; top: calc(100% + 6px); left: 0; right: 0; background: var(--surface-0); border: 1px solid var(--ink-100); border-radius: 8px; box-shadow: 0 10px 30px rgba(15,23,42,0.12); max-height: 380px; overflow-y: auto; z-index: 50; }
+    .search-dropdown__status { padding: 14px 16px; font-size: 12.5px; color: var(--ink-500); }
+    .search-result { display: grid; grid-template-columns: 86px 1fr; grid-template-rows: auto auto; align-items: baseline; gap: 4px 12px; width: 100%; text-align: left; padding: 12px 16px; background: transparent; border: none; cursor: pointer; border-bottom: 1px solid var(--ink-100); font-family: inherit; }
+    .search-result:last-child { border-bottom: none; }
+    .search-result.active, .search-result:hover { background: rgba(241,134,11,0.06); }
+    .search-result__type { grid-row: 1; grid-column: 1; font-family: var(--font-mono); font-size: 9.5px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; color: var(--brand-orange); align-self: center; padding: 3px 8px; border-radius: 999px; background: rgba(241,134,11,0.12); text-align: center; }
+    .search-result__title { grid-row: 1; grid-column: 2; font-size: 13.5px; font-weight: 600; color: var(--ink-900); }
+    .search-result__snippet { grid-row: 2; grid-column: 2; font-size: 12px; color: var(--ink-500); overflow: hidden; text-overflow: ellipsis; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; }
+
+    main.content { flex: 1; overflow: auto; }
+    .content__inner { max-width: 1100px; margin: 0 auto; padding: 32px; }
+
+    /* Welkom-pagina */
+    .welcome__eyebrow { font-family: var(--font-mono); font-size: 11px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--brand-orange); margin: 0 0 8px; }
+    .welcome__title { font-family: var(--font-display); font-size: 30px; font-weight: 700; letter-spacing: -0.02em; color: var(--ink-900); margin: 0 0 12px; }
+    .welcome__lead { font-size: 15px; color: var(--ink-500); line-height: 1.6; margin: 0 0 32px; max-width: 640px; }
+    .welcome__lead code { font-family: var(--font-mono); font-size: 12px; background: #f3f4f6; padding: 2px 6px; border-radius: 4px; color: var(--ink-700); }
+
+    .section-eyebrow { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; color: var(--ink-500); margin: 0 0 14px; }
+
+    .feature-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 12px; margin-bottom: 36px; }
+    .feature { background: var(--surface-0); border: 1px solid var(--ink-100); border-radius: 8px; padding: 18px 20px; display: flex; gap: 12px; align-items: flex-start; }
+    .feature__num { font-family: var(--font-mono); font-size: 10px; color: var(--ink-400); padding-top: 1px; }
+    .feature__title { font-size: 13.5px; font-weight: 600; color: var(--ink-900); margin: 0 0 4px; }
+    .feature__body { font-size: 12px; color: var(--ink-500); line-height: 1.55; margin: 0; }
+
+    /* Beheers-tab tabellen */
+    .panel { background: var(--surface-0); border: 1px solid var(--ink-100); border-radius: 8px; overflow: hidden; margin-bottom: 28px; }
+    .panel__head { padding: 14px 20px; border-bottom: 1px solid var(--ink-100); display: flex; align-items: center; justify-content: space-between; }
+    .panel__title { font-size: 13.5px; font-weight: 600; color: var(--ink-900); margin: 0; }
+    .panel__count { font-size: 11px; color: var(--ink-400); font-family: var(--font-mono); }
+    table { width: 100%; border-collapse: collapse; font-size: 13px; }
+    th { text-align: left; padding: 10px 20px; font-size: 10px; font-weight: 600; color: var(--ink-500); text-transform: uppercase; letter-spacing: 0.08em; background: #f9fafb; border-bottom: 1px solid var(--ink-100); }
+    td { padding: 12px 20px; color: var(--ink-700); border-bottom: 1px solid var(--ink-100); vertical-align: top; }
+    tr:last-child td { border-bottom: none; }
+    .pill { display: inline-flex; align-items: center; padding: 2px 8px; border-radius: 999px; font-size: 11px; font-weight: 500; }
+    .pill--admin { background: rgba(241,134,11,0.12); color: var(--brand-orange); }
+    .pill--user  { background: var(--surface-2); color: var(--ink-700); }
+    .pill--cat   { background: rgba(241,134,11,0.10); color: var(--brand-orange); }
+    .mono { font-family: var(--font-mono); font-size: 12px; color: var(--ink-500); }
+
+    /* Tabs (alleen visueel; tab-switch via JS) */
+    .tab-pane { display: none; }
+    .tab-pane.active { display: block; }
+
+    /* Search-flash highlight */
+    .search-flash { animation: searchFlash 1.4s var(--ease-out) both; }
+    @keyframes searchFlash {
+      0%   { box-shadow: 0 0 0 0 rgba(241,134,11,0.55); }
+      20%  { box-shadow: 0 0 0 6px rgba(241,134,11,0.35); }
+      100% { box-shadow: 0 0 0 0 rgba(241,134,11,0); }
+    }
+
+    .preview-banner { position: fixed; bottom: 12px; right: 12px; background: var(--brand-navy); color: #fff; font-family: var(--font-mono); font-size: 11px; padding: 8px 14px; border-radius: var(--radius-sm); box-shadow: 0 4px 12px rgba(0,0,0,0.2); letter-spacing: 0.05em; text-transform: uppercase; }
+    .preview-banner span { color: var(--brand-green); margin-right: 8px; }
+  </style>
+</head>
+<body>
+  <div class="shell">
+    <aside class="sidebar">
+      <div class="sidebar__brand">
+        <svg class="sidebar__logo" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80">
+          <defs>
+            <linearGradient id="hbGlow" x1="0%" y1="0%" x2="100%" y2="0%">
+              <stop offset="0%" style="stop-color:#A0C554;stop-opacity:0.15"/>
+              <stop offset="35%" style="stop-color:#A0C554;stop-opacity:1"/>
+              <stop offset="65%" style="stop-color:#A0C554;stop-opacity:1"/>
+              <stop offset="100%" style="stop-color:#A0C554;stop-opacity:0.15"/>
+            </linearGradient>
+            <filter id="hbBlur" x="-20%" y="-20%" width="140%" height="140%">
+              <feGaussianBlur stdDeviation="0.9" result="blur"/>
+              <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+            </filter>
+          </defs>
+          <rect width="80" height="80" rx="18" fill="#252A3A"/>
+          <line x1="6" y1="40" x2="74" y2="40" stroke="#2f3548" stroke-width="0.8" stroke-dasharray="1 2"/>
+          <path d="M 6 40 L 18 40 L 20 37 L 22 43 L 24 40 L 28 40 L 30 16 L 34 64 L 38 40 L 41 40 L 43 42 L 45 38 L 47 42 L 49 40 L 52 40 L 54 28 L 58 52 L 61 40 L 64 40 L 66 38 L 68 41 L 70 40 L 74 40"
+            fill="none" stroke="url(#hbGlow)" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" filter="url(#hbBlur)"/>
+        </svg>
+      </div>
+
+      <nav class="sidebar__nav">
+        <button class="sidebar__link active" data-tab-link="welkom">
+          <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
+          Home
+        </button>
+
+        <div class="sidebar__section">Beheer</div>
+        <button class="sidebar__link" data-tab-link="beheer">
+          <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.066 2.573c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.573 1.066c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.066-2.573c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+          Beheerspanel
+        </button>
+      </nav>
+
+      <div class="sidebar__foot">
+        <div class="sidebar__user">
+          <span class="sidebar__user-name">admin@appsys.local</span>
+          <button class="sidebar__logout">Uitloggen</button>
+        </div>
+        <div class="sidebar__brandline">AppSys ICT Group</div>
+      </div>
+    </aside>
+
+    <div class="main">
+      <header class="topbar">
+        <div class="topbar__left">
+          <span class="topbar__eyebrow" id="topbarEyebrow">Overzicht</span>
+          <h2 class="topbar__title" id="topbarTitle">Welkom</h2>
+        </div>
+        <div class="topbar__center">
+          <div class="search-wrapper" id="searchWrapper">
+            <label class="search-field">
+              <svg class="search-field__icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-4.35-4.35M11 19a8 8 0 100-16 8 8 0 000 16z"/></svg>
+              <input id="searchInput" type="search" placeholder="Zoeken..." autocomplete="off" spellcheck="false" class="search-field__input" />
+              <kbd class="search-field__kbd">Ctrl K</kbd>
+            </label>
+            <div id="searchDropdown" class="search-dropdown" style="display:none"></div>
+          </div>
+        </div>
+        <div class="topbar__left"></div>
+      </header>
+
+      <main class="content">
+        <div class="content__inner">
+          <!-- Welkom-tab -->
+          <div class="tab-pane active" data-tab-pane="welkom">
+            <p class="welcome__eyebrow">AppSys Template</p>
+            <h1 class="welcome__title">Klaar om te bouwen.</h1>
+            <p class="welcome__lead">
+              Deze scaffold geeft je een werkend product op dag 1: huisstijl, layout, auth, RBAC, lokale database, search en
+              quality gates. Hieronder zie je wat er uit de doos zit. Begin met <code>docs/MVP.md</code> en
+              <code>docs/PROJECT-BRIEF.md</code> om je MVP te definieren, en lees <code>docs/STACK-STANDARD.md</code> voor de huisregels.
+            </p>
+
+            <h3 class="section-eyebrow">Wat zit erin</h3>
+            <div class="feature-grid" id="featureGrid"></div>
+          </div>
+
+          <!-- Beheer-tab -->
+          <div class="tab-pane" data-tab-pane="beheer">
+            <p class="welcome__eyebrow">Admin</p>
+            <h1 class="welcome__title">Beheerspanel</h1>
+            <p class="welcome__lead">
+              Admin-only pagina. Hier breidt de engineer de eigen domein-resources uit; de items hieronder zijn de
+              seed-rijen uit <code>backend/src/db/migrations/002_items.sql</code>.
+            </p>
+
+            <section class="panel">
+              <div class="panel__head">
+                <h3 class="panel__title">Items</h3>
+                <span class="panel__count" id="itemsCount"></span>
+              </div>
+              <table>
+                <thead>
+                  <tr>
+                    <th style="width:90px">Slug</th>
+                    <th style="width:160px">Titel</th>
+                    <th>Beschrijving</th>
+                    <th style="width:120px">Categorie</th>
+                  </tr>
+                </thead>
+                <tbody id="itemsTbody"></tbody>
+              </table>
+            </section>
+
+            <section class="panel">
+              <div class="panel__head">
+                <h3 class="panel__title">Gebruikers</h3>
+                <span class="panel__count" id="usersCount"></span>
+              </div>
+              <table>
+                <thead>
+                  <tr>
+                    <th style="width:60px">ID</th>
+                    <th>Email</th>
+                    <th style="width:100px">Rol</th>
+                    <th style="width:200px">Aangemaakt</th>
+                  </tr>
+                </thead>
+                <tbody id="usersTbody"></tbody>
+              </table>
+            </section>
+          </div>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <div class="preview-banner"><span>&#9679;</span>Standalone huisstijl-preview</div>
+
+  <script>
+    // Inline data, parallel aan backend/src/db/migrations/002_items.sql en 004_seed_admin.sql
+    const ITEMS = [
+      { id: 1, slug: 'stack',          title: 'Stack',          description: 'Vue 3, Vite, Pinia en Tailwind. Backend Express + sql.js.', category: 'overview' },
+      { id: 2, slug: 'auth',           title: 'Auth',           description: 'Lokale JWT plus bcrypt. Geen externe identity-provider nodig.', category: 'overview' },
+      { id: 3, slug: 'backend',        title: 'Backend',        description: 'Express op poort 3001. Routes onder /api.', category: 'overview' },
+      { id: 4, slug: 'database',       title: 'Database',       description: 'SQLite via sql.js, file-persist op backend/data/app.db.', category: 'overview' },
+      { id: 5, slug: 'onboarding',     title: 'Onboarding',     description: 'Volg ONBOARDING.md, ~45 minuten van clone tot eerste run.', category: 'docs' },
+      { id: 6, slug: 'mvp-doc',        title: 'MVP-document',   description: 'Vul docs/MVP.md in zodra je weet wat je gaat bouwen.', category: 'docs' },
+      { id: 7, slug: 'stack-standard', title: 'Stack-standaard',description: 'Lees docs/STACK-STANDARD.md voor de huisregels.', category: 'docs' },
+      { id: 8, slug: 'huisstijl',      title: 'Huisstijl',      description: 'Navy plus oranje plus groen. Tokens in tailwind.config.js.', category: 'design' }
+    ];
+
+    const USERS = [
+      { id: 1, email: 'admin@appsys.local',   role: 'admin', created_at: '2026-04-28 09:14:00' },
+      { id: 2, email: 'engineer@example.com', role: 'user',  created_at: '2026-04-28 09:18:42' },
+      { id: 3, email: 'product@example.com',  role: 'user',  created_at: '2026-04-28 09:25:11' }
+    ];
+
+    const FEATURES = [
+      { title: 'Huisstijl ingebakken',  body: 'Navy + oranje + groen + cyaan via brand.* tokens. AppShell met sidebar en topbar uit de doos.' },
+      { title: 'Live zoekbalk',         body: 'Ctrl+K of klik in de balk. Zoekt server-side in items en gebruikers, scrollt naar het juiste paneel (cross-tab).' },
+      { title: 'Lokale auth',           body: 'JWT plus bcrypt. Register en login werken direct na install, geen externe provider nodig.' },
+      { title: 'RBAC standaard',        body: 'admin- en user-rol vanaf dag 1. Admin-seed: admin@appsys.local / appsys00. Beheer-pagina admin-only.' },
+      { title: 'SQLite via sql.js',     body: 'Zero native binaries. File-persist op backend/data/app.db, migrations runnen automatisch op opstart.' },
+      { title: 'ESLint guardrails',     body: 'Tailwind kleur-classes buiten brand.* worden geblokkeerd. Externe UI-libs (Vuetify, Bootstrap, MUI) zijn dichtgetimmerd.' },
+      { title: 'Pre-commit hook',       body: 'Em-dashes, hardcoded hex, LLM-tell-emojis en lint-errors blokkeren de commit. Activeert automatisch bij npm install.' },
+      { title: 'Skills meegeleverd',    body: '/start-sessie, /einde-sessie en /nieuw-project via onboarding/install-skills.{ps1,sh}.' }
+    ];
+
+    function el(tag, attrs, text) {
+      const e = document.createElement(tag);
+      if (attrs) for (const k in attrs) e.setAttribute(k, attrs[k]);
+      if (text !== undefined) e.textContent = text;
+      return e;
+    }
+
+    function renderFeatures() {
+      const root = document.getElementById('featureGrid');
+      FEATURES.forEach((f, idx) => {
+        const card = el('article', { class: 'feature', id: 'feature-' + (idx + 1) });
+        card.appendChild(el('span', { class: 'feature__num' }, String(idx + 1).padStart(2, '0')));
+        const body = el('div');
+        body.appendChild(el('div', { class: 'feature__title' }, f.title));
+        body.appendChild(el('p', { class: 'feature__body' }, f.body));
+        card.appendChild(body);
+        root.appendChild(card);
+      });
+    }
+
+    function renderItems() {
+      const tbody = document.getElementById('itemsTbody');
+      ITEMS.forEach(item => {
+        const tr = el('tr', { id: 'item-' + item.id });
+        tr.appendChild(el('td', { class: 'mono' }, item.slug));
+        const titleTd = el('td'); titleTd.style.fontWeight = '600'; titleTd.style.color = 'var(--ink-900)'; titleTd.textContent = item.title;
+        tr.appendChild(titleTd);
+        tr.appendChild(el('td', null, item.description));
+        const catTd = el('td');
+        catTd.appendChild(el('span', { class: 'pill pill--cat' }, item.category));
+        tr.appendChild(catTd);
+        tbody.appendChild(tr);
+      });
+      document.getElementById('itemsCount').textContent = ITEMS.length + ' items';
+    }
+
+    function renderUsers() {
+      const tbody = document.getElementById('usersTbody');
+      USERS.forEach(u => {
+        const tr = el('tr', { id: 'user-' + u.id });
+        tr.appendChild(el('td', { class: 'mono' }, String(u.id)));
+        tr.appendChild(el('td', null, u.email));
+        const roleTd = el('td');
+        roleTd.appendChild(el('span', { class: 'pill ' + (u.role === 'admin' ? 'pill--admin' : 'pill--user') }, u.role));
+        tr.appendChild(roleTd);
+        tr.appendChild(el('td', { class: 'mono' }, u.created_at));
+        tbody.appendChild(tr);
+      });
+      document.getElementById('usersCount').textContent = USERS.length + ' gebruikers';
+    }
+
+    renderFeatures();
+    renderItems();
+    renderUsers();
+
+    // ----- Tabs -----
+    const tabTitles = { welkom: { title: 'Welkom', eyebrow: 'Overzicht' }, beheer: { title: 'Beheerspanel', eyebrow: 'Admin' } };
+    function setTab(name) {
+      document.querySelectorAll('[data-tab-pane]').forEach(p => {
+        p.classList.toggle('active', p.dataset.tabPane === name);
+      });
+      document.querySelectorAll('[data-tab-link]').forEach(b => {
+        b.classList.toggle('active', b.dataset.tabLink === name);
+      });
+      const meta = tabTitles[name];
+      if (meta) {
+        document.getElementById('topbarTitle').textContent = meta.title;
+        document.getElementById('topbarEyebrow').textContent = meta.eyebrow;
+      }
+    }
+    document.querySelectorAll('[data-tab-link]').forEach(b => {
+      b.addEventListener('click', () => setTab(b.dataset.tabLink));
+    });
+
+    // ----- Search -----
+    const inputEl = document.getElementById('searchInput');
+    const dropdownEl = document.getElementById('searchDropdown');
+    const wrapperEl = document.getElementById('searchWrapper');
+    let activeIndex = -1;
+    let lastResults = [];
+    let debounceTimer = null;
+
+    function tabForAnchor(anchor) {
+      // 'feature-N' staat in welkom-tab; 'item-N' en 'user-N' staan in beheer-tab.
+      if (anchor.startsWith('feature-')) return 'welkom';
+      return 'beheer';
+    }
+
+    function search(q) {
+      const term = q.trim().toLowerCase();
+      if (term.length < 2) return [];
+      const out = [];
+      ITEMS.forEach(i => {
+        if (i.title.toLowerCase().includes(term) || i.description.toLowerCase().includes(term) || i.slug.toLowerCase().includes(term)) {
+          out.push({ type: 'item', title: i.title, snippet: i.description, category: i.category, anchor: 'item-' + i.id });
+        }
+      });
+      USERS.forEach(u => {
+        if (u.email.toLowerCase().includes(term) || u.role.toLowerCase().includes(term)) {
+          out.push({ type: 'gebruiker', title: u.email, snippet: 'Rol: ' + u.role + ' (lid sinds ' + u.created_at.split(' ')[0] + ')', category: u.role, anchor: 'user-' + u.id });
+        }
+      });
+      FEATURES.forEach((f, idx) => {
+        if (f.title.toLowerCase().includes(term) || f.body.toLowerCase().includes(term)) {
+          out.push({ type: 'feature', title: f.title, snippet: f.body, category: 'welkom', anchor: 'feature-' + (idx + 1) });
+        }
+      });
+      return out.slice(0, 15);
+    }
+
+    function renderDropdown() {
+      dropdownEl.innerHTML = '';
+      const q = inputEl.value.trim();
+      if (q.length < 2) { dropdownEl.style.display = 'none'; return; }
+      if (lastResults.length === 0) {
+        dropdownEl.style.display = 'block';
+        dropdownEl.appendChild(el('div', { class: 'search-dropdown__status' }, 'Geen treffers voor "' + q + '"'));
+        return;
+      }
+      dropdownEl.style.display = 'block';
+      lastResults.forEach((r, idx) => {
+        const btn = el('button', { type: 'button', class: 'search-result' + (idx === activeIndex ? ' active' : '') });
+        btn.appendChild(el('span', { class: 'search-result__type' }, r.type));
+        btn.appendChild(el('span', { class: 'search-result__title' }, r.title));
+        btn.appendChild(el('span', { class: 'search-result__snippet' }, r.snippet));
+        btn.addEventListener('mousedown', (ev) => { ev.preventDefault(); pickResult(r); });
+        btn.addEventListener('mouseenter', () => { activeIndex = idx; updateActive(); });
+        dropdownEl.appendChild(btn);
+      });
+    }
+
+    function updateActive() {
+      [...dropdownEl.querySelectorAll('.search-result')].forEach((b, i) => b.classList.toggle('active', i === activeIndex));
+    }
+
+    function pickResult(r) {
+      const targetTab = tabForAnchor(r.anchor);
+      setTab(targetTab);
+      // Wacht een frame zodat het pane visible is voordat we scrollen.
+      requestAnimationFrame(() => {
+        const target = document.getElementById(r.anchor);
+        if (target) {
+          target.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          target.classList.remove('search-flash');
+          void target.offsetWidth;
+          target.classList.add('search-flash');
+          setTimeout(() => target.classList.remove('search-flash'), 1500);
+        }
+      });
+      inputEl.value = '';
+      lastResults = [];
+      activeIndex = -1;
+      dropdownEl.style.display = 'none';
+      inputEl.blur();
+    }
+
+    inputEl.addEventListener('input', () => {
+      activeIndex = -1;
+      if (debounceTimer) clearTimeout(debounceTimer);
+      debounceTimer = setTimeout(() => {
+        lastResults = search(inputEl.value);
+        renderDropdown();
+      }, 140);
+    });
+    inputEl.addEventListener('focus', () => {
+      if (inputEl.value.trim().length >= 2) {
+        lastResults = search(inputEl.value);
+        renderDropdown();
+      }
+    });
+    inputEl.addEventListener('blur', (ev) => {
+      const next = ev.relatedTarget;
+      if (next && wrapperEl.contains(next)) return;
+      setTimeout(() => { dropdownEl.style.display = 'none'; }, 120);
+    });
+    inputEl.addEventListener('keydown', (ev) => {
+      if (ev.key === 'Escape') { inputEl.value = ''; lastResults = []; dropdownEl.style.display = 'none'; inputEl.blur(); return; }
+      if (ev.key === 'ArrowDown') { if (lastResults.length === 0) return; ev.preventDefault(); activeIndex = (activeIndex + 1) % lastResults.length; updateActive(); return; }
+      if (ev.key === 'ArrowUp')   { if (lastResults.length === 0) return; ev.preventDefault(); activeIndex = activeIndex <= 0 ? lastResults.length - 1 : activeIndex - 1; updateActive(); return; }
+      if (ev.key === 'Enter')     { if (lastResults.length === 0) return; ev.preventDefault(); pickResult(activeIndex >= 0 ? lastResults[activeIndex] : lastResults[0]); }
+    });
+    document.addEventListener('keydown', (ev) => {
+      if ((ev.ctrlKey || ev.metaKey) && !ev.shiftKey && !ev.altKey && ev.key.toLowerCase() === 'k') {
+        ev.preventDefault();
+        inputEl.focus();
+        inputEl.select();
+      }
+    });
+  </script>
+</body>
+</html>
