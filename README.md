@@ -1,6 +1,21 @@
 # AppSys Stack-Standaard (Claudebase-template)
 
-> Bedrijfsstandaard scaffold voor interne projecten bij AppSys. Vue 3 + Express + SQLite + Vitest met lokale JWT-auth. Wordt gekloond, gescaffold, en via drie Claude Code-skills (`/start-sessie`, `/nieuw-project`, `/einde-sessie`) bediend. Eenmaal geinstalleerd kan een engineer binnen 45 minuten productief zijn zonder voorkennis en zonder pre-installed tools.
+> Bedrijfsstandaard scaffold voor interne projecten bij AppSys. Vue 3 +
+> Express + SQLite + Vitest met lokale JWT-auth, RBAC en huisstijl
+> ingebakken. Wordt gekloond, gescaffold, en via drie Claude
+> Code-skills (`/start-sessie`, `/nieuw-project`, `/einde-sessie`)
+> bediend. Een engineer is binnen 45 minuten productief, zonder
+> voorkennis en zonder pre-installed tools.
+
+---
+
+## Snel kiezen
+
+| Ik wil... | Lees |
+|---|---|
+| Een **nieuw** project starten | [`NIEUW-PROJECT.md`](./NIEUW-PROJECT.md) |
+| Een **bestaand** project upgraden naar deze versie | [`MIGRATIE-bestaand-project.md`](./MIGRATIE-bestaand-project.md) |
+| 45-min onboarding-checklist voor de hele toolchain | [`ONBOARDING.md`](./ONBOARDING.md) |
 
 ---
 
@@ -10,49 +25,63 @@
 |---|---|
 | Frontend | Vue 3 + Vite + TypeScript + Pinia + Tailwind CSS |
 | Auth | Lokaal: JWT + bcrypt + `users`-tabel (register/login/me scaffold) |
+| RBAC | `role`-kolom (admin/user) + `requireRole`-middleware |
 | Backend | Express + TypeScript (port 3001) |
 | Database | SQLite via `sql.js` (file-persist) |
 | Validatie | Zod |
 | Testing | Vitest + supertest |
+| Lint + format | ESLint (root + FE + BE) + pre-commit hook |
 | Package manager | npm |
+
+**Ingebakken huisstijl** (raak je niet kwijt na een verkeerde edit):
+- Brand-tokens `brand.{navy,orange,cyan,green}` in `tailwind.config.js`.
+- AppShell met sidebar + topbar + hartslag-logo + Ctrl+K-search.
+- Inter / Inter Tight / JetBrains Mono fonts.
+
+**Ingebakken guardrails**:
+- ESLint blokkeert imports van externe UI-libs (`vuetify`, `bootstrap`,
+  `primevue`, `quasar`, `@mui/*`, `@chakra-ui/*`, `element-plus`,
+  `naive-ui`, `ant-design-vue`).
+- Pre-commit hook weigert em-dashes, curly quotes, AI-tell-emojis,
+  hex-codes buiten CSS, niet-brand Tailwind kleur-classes en
+  ESLint-errors.
+- Hook activeert automatisch via `postinstall` na `npm install`.
+
+**Ingebakken admin**:
+- Seed-account `admin@appsys.local` / `appsys00`.
+- `/admin` route met items + gebruikers-tabel, admin-only via router-guard.
 
 Mappenboom:
 
 ```
 _template/
   backend/                 Express + TS + sql.js
+    .eslintrc.cjs          blokkeert template-literal-SQL
     src/
-      routes/              health, auth, me
-      services/            authService
-      middleware/          requireAuth
-      db/                  connection + migrations
+      routes/              health, auth, me, items, search, admin
+      services/            authService (incl. role)
+      middleware/          requireAuth, requireRole
+      db/                  connection + migrations (incl. seed-admin)
   frontend/                Vue 3 + Vite + Pinia + Tailwind
+    .eslintrc.cjs          blokkeert externe UI-libs en niet-brand classes
+    public/brand/          hartslag-logo + favicon
     src/
       api/client.ts        axios instance + Bearer-interceptor
-      stores/auth.ts       Pinia auth store (localStorage persist)
-      views/               Home, Login, Register
-  docs/                    STACK-STANDARD, MVP, ARCHITECTURE, ...
-  onboarding/              Claude Code skills + agents snapshot + install-scripts
+      components/layout/   AppShell.vue (sidebar + topbar + search)
+      stores/              auth + items
+      views/               Home, Login, Register, Admin
+      style.css            CSS-tokens (--brand-*, --surface-*, --ink-*)
+  docs/                    STACK-STANDARD, UX-DESIGN, style-guide, MVP, ARCHITECTURE
+  scripts/git-hooks/       pre-commit + README
+  onboarding/              install-skills + Claude Code skills + agents
+  index.html               standalone huisstijl-preview (open via file://)
   .env.example             vul JWT_SECRET aan
-  package.json             monorepo scripts (dev, build, test, install:all)
+  package.json             monorepo scripts + postinstall (hook-activatie)
 ```
 
 ---
 
-## Prereqs
-
-Installeer eenmalig op je machine:
-
-- **Node.js 20 LTS** \u2014 https://nodejs.org
-- **Git** \u2014 https://git-scm.com
-- **Claude Code CLI** \u2014 https://docs.claude.com/claude-code
-- Editor: **VS Code** aanbevolen met extensions: Vue (Volar), Tailwind CSS IntelliSense, ESLint
-
-Werk je van nul? Volg `ONBOARDING.md` \u2014 afvinkbare 45-minuten-checklist.
-
----
-
-## Quickstart (10 min)
+## Quickstart (10 min, na prereqs)
 
 ```bash
 git clone https://github.com/BenjaminCes/AppSys-TemplateStack
@@ -60,10 +89,11 @@ cd AppSys-TemplateStack
 
 # 1. Dependencies (backend + frontend + root)
 npm run install:all
+# postinstall activeert de pre-commit hook automatisch.
 
 # 2. Env-file
 cp .env.example .env
-# Open .env en vul JWT_SECRET in. Genereer een eigen secret:
+# Open .env en vul JWT_SECRET in. Genereer:
 #   PowerShell:  [Convert]::ToBase64String((1..32 | % {[byte](Get-Random -Max 256)}))
 #   macOS/Linux: openssl rand -hex 32
 
@@ -72,113 +102,103 @@ npm run dev
 # -> backend: http://localhost:3001
 # -> frontend: http://localhost:5173
 
-# 4. Ga naar http://localhost:5173
-#    Klik "Registreren", maak een test-account, log in.
+# 4. Login op http://localhost:5173
+#    email:    admin@appsys.local
+#    password: appsys00
 
-# 5. Tests draaien
+# 5. Tests + lint
 npm test
+npm run lint
 ```
 
-Als alles werkt: je hebt een werkend scaffold met login/logout-flow en een protected `/api/me` endpoint.
+Werkt alles? Je hebt een werkend scaffold met huisstijl-AppShell,
+RBAC, admin-login, en pre-commit-guardrails.
+
+> Bekijk `index.html` op toplevel (open in browser) voor een
+> standalone preview van de huisstijl zonder npm-install.
 
 ---
 
-## Claude Code workflow (verplicht)
+## Prereqs
 
-Binnen AppSys werken we altijd met drie slash-commands in Claude Code. Ze begeleiden je door het begin, het einde en het scaffolden van een sessie.
+Installeer eenmalig:
+
+- **Node.js 20 LTS**: https://nodejs.org
+- **Git**: https://git-scm.com
+- **VS Code** met extensions: Vue (Volar), Tailwind CSS IntelliSense, ESLint
+- (Aanbevolen) **Claude Code CLI**: https://docs.claude.com/claude-code
+
+Voor de volledige 45-min onboarding: [`ONBOARDING.md`](./ONBOARDING.md).
+
+---
+
+## Claude Code workflow (aanbevolen)
+
+Drie slash-commands begeleiden je:
 
 | Command | Wat doet het? |
 |---|---|
-| `/start-sessie` | Begin van je werkdag. Detecteert of je een leeg project, half-ingevulde scaffold of bestaand project hebt. Vraagt MVP-intake + stack-bevestiging bij nieuwe projecten, git-status-check bij bestaande. |
-| `/einde-sessie` | Einde van je werkdag. Draait tests, biedt optionele security-scan (npm audit + secrets-grep + Claude-agent), vraagt commit-message, committeert, pusht naar GitHub. |
-| `/nieuw-project` | Scaffold een nieuw project vanuit deze template onder `C:\Claudebase\<naam>\`. Vraagt om GitHub-URL, vult MVP-docs, initialiseert git. |
+| `/start-sessie` | Begin werkdag. Detecteert mode (leeg / scaffolded / bestaand), draait git-status-check, MVP-intake bij nieuwe projecten. |
+| `/nieuw-project` | Scaffold nieuw project vanuit deze template onder `C:\Claudebase\<naam>\`. Pulse-eerst-check, GitHub-URL, MVP-intake. |
+| `/einde-sessie` | Einde werkdag. Lint + tests + optionele security-scan + commit + push. |
 
-### Skills eenmalig installeren
+### Skills installeren (eenmalig)
 
-De skills + de `security-scan` agent staan in `onboarding/`. Je installeert ze in je eigen `~/.claude/` zodat Claude Code ze herkent:
+Open de gekloonde template-folder en draai het install-script:
 
-**Windows (PowerShell):**
-```powershell
-./onboarding/install-skills.ps1
-```
-
-**macOS / Linux / Git-Bash:**
 ```bash
+# Windows (PowerShell):
+./onboarding/install-skills.ps1
+
+# macOS / Linux / Git-Bash:
 bash onboarding/install-skills.sh
 ```
 
-Verificatie: open Claude Code en typ `/` \u2014 je ziet nu `/start-sessie`, `/einde-sessie` en `/nieuw-project` in de lijst. Typ `/start-sessie` en de skill start.
-
-> Heb je lokale wijzigingen in `~/.claude/skills/<naam>/`? Maak eerst een back-up \u2014 het script overschrijft met `-Force`.
-
----
-
-## Nieuw project scaffolden
-
-### Aanbevolen (met Claude Code)
-
-```
-/nieuw-project MyApp
-```
-
-Volg de prompts (GitHub-URL, MVP-vragen, stack-bevestiging). Eindresultaat: werkend repo op GitHub met een eerste commit.
-
-### Handmatig
-
-```bash
-cp -r _template/. C:/Claudebase/MyApp/
-cd C:/Claudebase/MyApp/
-rm -rf onboarding README.md ONBOARDING.md    # deze horen niet in een scaffolded project
-git init -b main
-git remote add origin https://github.com/<user>/<repo>.git
-```
-
-Vervang daarna `PROJECT_NAME` door je echte projectnaam in:
-- `package.json` (root + backend + frontend)
-- `CLAUDE.md`
-- `frontend/index.html`
-- `frontend/src/views/HomeView.vue`
-- `docs/ARCHITECTURE.md`
-- `docs/MVP.md`
-
-Commit + push:
-```bash
-npm run install:all
-npm test
-git add -A
-git commit -m "chore: initial scaffold (stack-standaard)"
-git push -u origin main
-```
+Verifieer: open Claude Code en typ `/`. Je ziet `/start-sessie`,
+`/nieuw-project` en `/einde-sessie`.
 
 ---
 
-## Auth in de template
+## Auth + RBAC in de template
 
-Uit de doos werkt er een volwaardige lokale auth:
+| Rol  | Email                | Wachtwoord  | Notitie |
+|------|----------------------|-------------|---------|
+| Admin| `admin@appsys.local` | `appsys00`  | Seed via migration `004_seed_admin.sql`. Wijzig direct in production. |
+| User | (registreer zelf)    | min 8 chars | Default-rol bij register is `user`. |
 
-- **Users-tabel** \u2014 `email` (uniek) + `password_hash` (bcrypt).
-- **Register / Login** \u2014 `POST /api/auth/register`, `POST /api/auth/login`. Returnt `{user, token}`.
-- **JWT** \u2014 ondertekend met `JWT_SECRET` uit `.env`, default expiry 7 dagen (`JWT_EXPIRES_IN`).
-- **Middleware** \u2014 `requireAuth` op protected routes, leest `Authorization: Bearer <token>`.
-- **Voorbeeld** \u2014 `GET /api/me` is protected; `GET /api/health` is public.
-- **Frontend** \u2014 Pinia-store persist token in `localStorage`, axios-interceptor voegt Bearer-header toe, router-guard stuurt niet-ingelogde bezoekers naar `/login`.
+Endpoints:
+- `POST /api/auth/register` (publiek): maak een user-account.
+- `POST /api/auth/login`: returnt `{user, token}` met `role`.
+- `GET /api/me` (protected): returnt huidige user + role.
+- `GET /api/admin/users` (admin-only): list alle users.
 
-**Voor production voeg toe:** rate-limit op `/auth/login`, password-reset-flow, email-verificatie, optioneel MFA. De default-stack is een startpunt, niet end-state. Zie `docs/ARCHITECTURE.md#Auth`.
+Frontend:
+- `auth.isAdmin` getter in `stores/auth.ts`.
+- Router-guard: `meta: { requiresRole: 'admin' }` op admin-routes.
+- AppShell-sidebar `Beheer`-sectie alleen zichtbaar voor admins.
 
-Bij enterprise-context (SAML/OIDC / centraal gebruikersbeheer): overweeg Clerk of Auth0 \u2014 dat is een gerechtvaardigde afwijking, zie `docs/STACK-STANDARD.md#2-wanneer-afwijken`.
+Voor production: rate-limit op `/auth/login`, password-reset-flow,
+email-verificatie. Bij enterprise: overweeg Clerk of Auth0 (zie
+`docs/STACK-STANDARD.md` sectie 3).
 
 ---
 
 ## Conventies
 
-- **Taal UI + docs**: Nederlands | **code + commits**: Engels
-- **Geen em-dashes** (U+2014) in code, UI of commits
-- **Commits**: imperatief, 50 char subject, conventional (feat/fix/chore/docs/refactor)
-- **Branch-strategie**: direct op `main` voor MVP, feature-branch + PR voor groter werk
-- **Parameterized SQL**: uitsluitend `?`-placeholders, nooit string-concat in `db.run`/`db.exec`
-- **Zod** aan de route-rand (request-body, query-params)
-- **`.env`** nooit committen (gitignore dekt dit); `.env.example` als template
-- **JWT_SECRET** per omgeving uniek; default-waarde faalt de production-start
+- **Taal UI + docs**: Nederlands. **Code + commits**: Engels.
+- **Geen em-dashes** (U+2014) in code, UI of commits. Pre-commit hook
+  blokkeert.
+- **Geen externe UI-libs** zonder ADR. ESLint blokkeert.
+- **Alleen `brand.*` Tailwind-tokens** voor kleuren (plus `gray-*`,
+  `slate-*`, `red-*` voor errors). Pre-commit hook scant.
+- **Parameterized SQL**: alleen `?`-placeholders, nooit string-concat
+  in `db.run` / `db.exec`. ESLint blokkeert template-literal-SQL.
+- **Zod** aan de route-rand (request-body, query-params).
+- **`.env`** nooit committen (gitignore dekt dit); `.env.example` als
+  template. **JWT_SECRET** per omgeving uniek.
+
+Volledige UX-regels: [`docs/UX-DESIGN.md`](./docs/UX-DESIGN.md).
+Schrijfregels: [`docs/style-guide.md`](./docs/style-guide.md).
 
 ---
 
@@ -186,18 +206,23 @@ Bij enterprise-context (SAML/OIDC / centraal gebruikersbeheer): overweeg Clerk o
 
 | Bestand | Wat |
 |---|---|
+| [`NIEUW-PROJECT.md`](./NIEUW-PROJECT.md) | Drie wegen om een nieuw project te starten (Code / Desktop / Web) |
+| [`MIGRATIE-bestaand-project.md`](./MIGRATIE-bestaand-project.md) | Upgrade-guide voor bestaande forks |
 | [`ONBOARDING.md`](./ONBOARDING.md) | 45-min checklist voor nieuwe engineer |
 | [`docs/STACK-STANDARD.md`](./docs/STACK-STANDARD.md) | Waarom deze stack + afwijkings-regels |
+| [`docs/UX-DESIGN.md`](./docs/UX-DESIGN.md) | Design-principes + visual language + AppShell-regel |
+| [`docs/style-guide.md`](./docs/style-guide.md) | Schrijfregels (em-dashes, quotes, emoji's) |
 | [`docs/ARCHITECTURE.md`](./docs/ARCHITECTURE.md) | Technisch overzicht (stack, dataflow, auth, structuur) |
 | [`docs/MVP.md`](./docs/MVP.md) | Template voor MVP-intake (wordt gevuld in `/start-sessie`) |
 | [`docs/PROJECT-BRIEF.md`](./docs/PROJECT-BRIEF.md) | Stakeholders, tijdlijn, risico's |
-| [`docs/UX-DESIGN.md`](./docs/UX-DESIGN.md) | Design-principes + visual language |
 | [`CLAUDE.md`](./CLAUDE.md) | Per-project guidelines voor Claude Code |
+| [`scripts/git-hooks/README.md`](./scripts/git-hooks/README.md) | Pre-commit hook details + bypass |
 
 ---
 
 ## Support
 
-- Team-lead: Benjamin Ceyssens \u2014 `benjamin.ceyssens@appsysictgroup.com`
+- Team-lead: Benjamin Ceyssens, `benjamin.ceyssens@appsysictgroup.com`
 - Issues: https://github.com/BenjaminCes/AppSys-TemplateStack/issues
-- Vragen over de stack-keuze: zie `docs/STACK-STANDARD.md` sectie 2 voordat je afwijkt.
+- Stack-keuze-vragen: lees `docs/STACK-STANDARD.md` sectie 2 voor je
+  afwijkt.
